@@ -17,10 +17,14 @@ populateTextArea();
 
 function onFormSubmit(event) {
     event.preventDefault();
-    event.currentTarget.reset();
-    // console.log(event.currentTarget);
-    localStorage.removeItem(STORAGE_KEY);
-    console.log(formData);
+    if (refs.email.value && refs.textarea.value) {
+        event.currentTarget.reset();
+        // console.log(event.currentTarget);
+        localStorage.removeItem(STORAGE_KEY);
+        console.log(formData);
+    } else {
+        return alert("Fill all lines")
+    }
 }
 
 function onFormInput(evt) { 
@@ -33,8 +37,8 @@ function populateTextArea() {
 
     if (savedForm) {
         formData = savedForm; // без цього заново перезаписувався об"єкт
-        refs.email.value = savedForm.email;
-        refs.textarea.value = savedForm.message;
+        refs.email.value = savedForm.email || '';
+        refs.textarea.value = savedForm.message || '';
     }
 
     // if (!savedForm) {
