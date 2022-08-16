@@ -11,7 +11,9 @@ const refs = {
 
 // refs.textarea.addEventListener('input', throttle(onTextAreaInput, 500));
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(onFormInput, 500))
+refs.form.addEventListener('input', throttle(onFormInput, 500));
+
+let savedForm = null;
 
 populateTextArea();
 
@@ -21,10 +23,12 @@ function onFormSubmit(event) {
         event.currentTarget.reset();
         // console.log(event.currentTarget);
         localStorage.removeItem(STORAGE_KEY);
-        console.log(formData);
+        savedForm = null;
+        console.log(savedForm);
     } else {
         return alert("Fill all lines")
     }
+
 }
 
 function onFormInput(evt) { 
@@ -33,12 +37,11 @@ function onFormInput(evt) {
 }
 
 function populateTextArea() {
-    const savedForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
+    savedForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (savedForm) {
         formData = savedForm; // без цього заново перезаписувався об"єкт
-        refs.email.value = savedForm.email || '';
         refs.textarea.value = savedForm.message || '';
+        refs.email.value = savedForm.email || '';
     }
 
     // if (!savedForm) {
