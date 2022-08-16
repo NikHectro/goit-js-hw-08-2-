@@ -1,6 +1,8 @@
 import throttle from "lodash.throttle";
 
 let formData = {};
+// let savedForm = null; - bad try
+
 const STORAGE_KEY = 'feedback-message';
 
 const refs = {
@@ -13,22 +15,19 @@ const refs = {
 refs.form.addEventListener('submit', onFormSubmit);
 refs.form.addEventListener('input', throttle(onFormInput, 500));
 
-let savedForm = null;
-
 populateTextArea();
 
 function onFormSubmit(event) {
     event.preventDefault();
     if (refs.email.value && refs.textarea.value) {
+        console.log(formData);
         event.currentTarget.reset();
-        // console.log(event.currentTarget);
         localStorage.removeItem(STORAGE_KEY);
-        savedForm = null;
-        console.log(savedForm);
+        // savedForm = null; - bad try
+        formData = {}
     } else {
         return alert("Fill all lines")
     }
-
 }
 
 function onFormInput(evt) { 
@@ -37,7 +36,7 @@ function onFormInput(evt) {
 }
 
 function populateTextArea() {
-    savedForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const savedForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (savedForm) {
         formData = savedForm; // без цього заново перезаписувався об"єкт
         refs.textarea.value = savedForm.message || '';
